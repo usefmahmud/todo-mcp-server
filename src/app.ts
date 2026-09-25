@@ -23,7 +23,9 @@ const handler = createMcpHandler(() => {
 const node = toNodeHandler(handler);
 
 export const buildApp = () => {
-  const app = createMcpFastifyApp();
+  const app = createMcpFastifyApp({
+    host: process.env.VERCEL ? "0.0.0.0" : "127.0.0.1",
+  });
 
   app.all("/mcp", (request, reply) =>
     node(request.raw, reply.raw, request.body),
