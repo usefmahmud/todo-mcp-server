@@ -1,14 +1,10 @@
-import Fastify from "fastify";
+import { buildApp } from "./app";
 
-const fastify = Fastify();
+const PORT = Number(process.env.PORT ?? 8000);
 
-const PORT = process.env.PORT;
+const app = buildApp();
 
-fastify.get("/ping", async (_request, _reply) => {
-  return "pong\n";
-});
-
-fastify.listen({ port: parseInt(PORT!) }, (err, address) => {
+app.listen({ port: PORT, host: "127.0.0.1" }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);

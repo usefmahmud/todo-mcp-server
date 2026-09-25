@@ -1,0 +1,24 @@
+import { createMcpFastifyApp } from "@modelcontextprotocol/fastify";
+import { toNodeHandler } from "@modelcontextprotocol/node";
+import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
+
+const handler = createMcpHandler(() => {
+  const server = new McpServer({
+    name: "Todo MCP Server",
+    version: "1.0.0",
+  });
+
+  return server;
+});
+
+const node = toNodeHandler(handler);
+
+export const buildApp = () => {
+  const app = createMcpFastifyApp();
+
+  app.all("/mcp", (request, reply) =>
+    node(request.raw, reply.raw, request.body),
+  );
+
+  return app;
+};
